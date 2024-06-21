@@ -6,9 +6,9 @@ const roles = require('../utils/roles');
 
 const router = express.Router();
 
-router.post('/createProject', authorize([roles.UserAdmin, roles.SubAdmin]), createProject);
-router.get('/createProject', getProjects);
-router.put('/updateProject/:id', authorize([roles.UserAdmin, roles.SubAdmin]), updateProject);
-router.delete('/updateProject/:id', authorize([roles.UserAdmin]), deleteProject);
+router.post('/', auth, authorize([roles.UserAdmin, roles.SubAdmin]), createProject);
+router.get('/', auth, getProjects);
+router.put('/:id', auth, authorize([roles.UserAdmin, roles.SubAdmin]), updateProject);
+router.delete('/:id', auth, authorize([roles.UserAdmin]), deleteProject);
 
 module.exports = router;

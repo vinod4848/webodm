@@ -1,29 +1,21 @@
-const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
-const User = require("../models/User");
-
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
 dotenv.config();
 
-const authMiddleware = async (req, res, next) => {
-  let token;
-  if (req?.headers?.authorization?.startsWith("Bearer")) {
-    token = req?.headers?.authorization?.split(" ")[1];
-    if (token) {
-      const decode = jwt.verify(token, process.env.JWT_SECRET);
-      const user = await User.findById(decode.id);
-      req.user = user;
-      next();
-    } else {
-      res.send("Invalid Token");
-    }
-  } else {
-    res.send("you don't have a token to access this route");
+const auth = (req, res, next) => {
+  const authHeader = req.header('Authorization');
+  if (!authHeader) return res.status(401).json({ msg: 'No token, authorization denied' });
+
+  const token = authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ msg: 'No token, authorization denied' });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded.user;
+    next();
+  } catch (err) {
+    res.status(401).json({ msg: 'Token is not valid' });
   }
 };
-const isAdmin = async (req, res, next) => {
-  const isAdmin = req?.user?.role == "userAdmin";
-  if (isAdmin) next();
-  else res.send("Not Authozired");
-};
 
-module.exports = { authMiddleware, isAdmin };
+module.exports = auth;

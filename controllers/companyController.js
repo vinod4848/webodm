@@ -1,4 +1,4 @@
-const Company = require("../models/Company");
+const Company = require('../models/Company');
 
 exports.createCompany = async (req, res) => {
   const { name, address, contactInfo, description } = req.body;
@@ -8,14 +8,14 @@ exports.createCompany = async (req, res) => {
       address,
       contactInfo,
       description,
-      createdBy: req.user.id,
+      createdBy: req.user.id
     });
 
     const company = await newCompany.save();
     res.json(company);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server error");
+    res.status(500).send('Server error');
   }
 };
 
@@ -25,7 +25,7 @@ exports.getCompanies = async (req, res) => {
     res.json(companies);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server error");
+    res.status(500).send('Server error');
   }
 };
 
@@ -34,7 +34,7 @@ exports.updateCompany = async (req, res) => {
   try {
     let company = await Company.findById(req.params.id);
     if (!company) {
-      return res.status(404).json({ msg: "Company not found" });
+      return res.status(404).json({ msg: 'Company not found' });
     }
 
     company.name = name || company.name;
@@ -46,16 +46,16 @@ exports.updateCompany = async (req, res) => {
     res.json(company);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server error");
+    res.status(500).send('Server error');
   }
 };
 
 exports.deleteCompany = async (req, res) => {
   try {
     await Company.findByIdAndDelete(req.params.id);
-    res.json({ msg: "Company removed" });
+    res.json({ msg: 'Company removed' });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server error");
+    res.status(500).send('Server error');
   }
 };

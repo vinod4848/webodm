@@ -1,4 +1,4 @@
-const Project = require('../models/Project');
+const Project = require("../models/Project");
 
 exports.createProject = async (req, res) => {
   const { name, description, teamMembers } = req.body;
@@ -7,14 +7,14 @@ exports.createProject = async (req, res) => {
       name,
       description,
       teamMembers,
-      createdBy: req.user.id
+      createdBy: req.user.id,
     });
 
     const project = await newProject.save();
     res.json(project);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 };
 
@@ -24,7 +24,7 @@ exports.getProjects = async (req, res) => {
     res.json(projects);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 };
 
@@ -33,7 +33,7 @@ exports.updateProject = async (req, res) => {
   try {
     let project = await Project.findById(req.params.id);
     if (!project) {
-      return res.status(404).json({ msg: 'Project not found' });
+      return res.status(404).json({ msg: "Project not found" });
     }
 
     project.name = name || project.name;
@@ -44,16 +44,16 @@ exports.updateProject = async (req, res) => {
     res.json(project);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 };
 
 exports.deleteProject = async (req, res) => {
   try {
     await Project.findByIdAndDelete(req.params.id);
-    res.json({ msg: 'Project removed' });
+    res.json({ msg: "Project removed" });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 };
