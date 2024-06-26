@@ -4,7 +4,7 @@ const CompanySchema = new mongoose.Schema({
   name: { type: String, required: true },
   address: { type: String, required: true },
   contactInfo: { type: String, required: true },
-  description: { type: String },
+  description: { type: String ,required: true},
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
 
