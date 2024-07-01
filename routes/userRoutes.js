@@ -6,8 +6,8 @@ const roles = require('../utils/roles');
 
 const router = express.Router();
 
-router.get('/', auth, getUser);
-router.put('/', auth, updateUser);
-router.delete('/:id', auth, authorize([roles.UserAdmin]), deleteUser);
+router.get('/getUser', auth, getUser);
+router.put('/updateUser/:id', auth, updateUser);
+router.delete('/updateUser/:id', auth, authorize([roles.UserAdmin]), deleteUser);
 
 module.exports = router;
